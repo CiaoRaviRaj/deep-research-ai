@@ -8,6 +8,7 @@ import { SessionDetails } from "@/components/research/SessionDetails";
 import { appConfig } from "@/config/app.config";
 import { HealthStatus } from "@/components/health/HealthStatus";
 import Image from "next/image";
+import { Footer } from "@/components/Footer";
 
 interface PageProps {
   params: Promise<{
@@ -110,6 +111,9 @@ export default function ReaseachDetailPage({ params }: PageProps): React.JSX.Ele
             <SessionDetails />
           </div>
         </div>
+
+        {/* ---------- Footer ---------- */}
+        <Footer />
       </div>
     </main>
   );

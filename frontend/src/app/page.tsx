@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ResearchDashboard } from "@/components/research/ResearchDashboard";
 import { HealthStatus } from "@/components/health/HealthStatus";
 import Image from "next/image";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "AI Deep Research Engine — Console Dashboard",
@@ -41,6 +42,9 @@ export default function HomePage(): React.JSX.Element {
         <section aria-label="Research Dashboard Application">
           <ResearchDashboard />
         </section>
+
+        {/* ---------- Footer ---------- */}
+        <Footer />
       </div>
     </main>
   );
