@@ -3,9 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { useResearchStore } from "@/store/research.store";
 import { appConfig } from "@/config/app.config";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function SessionList(): React.JSX.Element {
   const { sessions, activeSessionId, setSessions, setActiveSessionId } = useResearchStore();
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -171,10 +174,10 @@ export function SessionList(): React.JSX.Element {
                 key={session.id}
                 role="button"
                 tabIndex={0}
-                onClick={() => !isConfirming && setActiveSessionId(session.id)}
+                onClick={() => !isConfirming && router.push(`/reaseach/${session.id}` as Parameters<typeof router.push>[0])}
                 onKeyDown={(e) => {
                   if (!isConfirming && (e.key === "Enter" || e.key === " ")) {
-                    setActiveSessionId(session.id);
+                    router.push(`/reaseach/${session.id}` as Parameters<typeof router.push>[0]);
                   }
                 }}
                 className={[
@@ -209,7 +212,7 @@ export function SessionList(): React.JSX.Element {
                 <div className="mt-0.5">{renderStatusIcon(session.status)}</div>
 
                 {/* Text details */}
-                <div className="flex-1 min-w-0 space-y-1 pr-6">
+                <div className="flex-1 min-w-0 space-y-1 pr-16">
                   <h3
                     className={[
                       "font-sans text-sm font-semibold truncate",
@@ -225,6 +228,19 @@ export function SessionList(): React.JSX.Element {
                     <span>{formatDate(session.created_at)}</span>
                   </div>
                 </div>
+
+                {/* Open in new tab/page button (absolute position, middle-right) */}
+                <Link
+                  href={`/reaseach/${session.id}` as Parameters<typeof Link>[0]["href"]}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute right-10 top-1/2 -translate-y-1/2 opacity-0 group-hover/row:opacity-100 transition-all duration-150 p-1.5 rounded-lg text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 focus:outline-none focus:opacity-100"
+                  title="Open research in new page"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </Link>
 
                 {/* Delete button (absolute position, far right) */}
                 <button

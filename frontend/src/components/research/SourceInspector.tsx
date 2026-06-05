@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Source, ExecutionLog } from "@/types/research";
 import { appConfig } from "@/config/app.config";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 interface SourceInspectorProps {
   sessionId: string;
@@ -76,40 +77,6 @@ export function SourceInspector({ sessionId, activeLogs }: SourceInspectorProps)
     }
   }
 
-  // Helper to parse simple markdown in summary
-  function renderMarkdown(text: string) {
-    if (!text) return null;
-    return text.split("\n").map((para, i) => {
-      const cleanPara = para.trim();
-      if (!cleanPara) return <div key={i} className="h-2" />;
-
-      if (cleanPara.startsWith("# ")) {
-        return <h1 key={i} className="text-base font-bold font-outfit mt-3 mb-1 text-white">{cleanPara.substring(2)}</h1>;
-      }
-      if (cleanPara.startsWith("## ")) {
-        return <h2 key={i} className="text-sm font-bold font-outfit mt-3 mb-1 text-white">{cleanPara.substring(3)}</h2>;
-      }
-      if (cleanPara.startsWith("### ")) {
-        return <h3 key={i} className="text-xs font-bold font-outfit mt-2 mb-1 text-violet-200">{cleanPara.substring(4)}</h3>;
-      }
-      if (cleanPara.startsWith("- ") || cleanPara.startsWith("* ")) {
-        return <li key={i} className="ml-3 list-disc text-xs text-[var(--color-text-secondary)] mb-0.5">{cleanPara.substring(2)}</li>;
-      }
-
-      // Check for inline bold (**text**)
-      const boldRegex = /\*\*(.*?)\*\*/g;
-      if (boldRegex.test(cleanPara)) {
-        const parts = cleanPara.split(boldRegex);
-        return (
-          <p key={i} className="text-xs leading-relaxed text-[var(--color-text-secondary)] mb-2">
-            {parts.map((part, index) => index % 2 === 1 ? <strong key={index} className="text-white font-semibold">{part}</strong> : part)}
-          </p>
-        );
-      }
-
-      return <p key={i} className="text-xs leading-relaxed text-[var(--color-text-secondary)] mb-2">{cleanPara}</p>;
-    });
-  }
 
   return (
     <div className="flex h-full flex-col space-y-4">
@@ -261,7 +228,7 @@ export function SourceInspector({ sessionId, activeLogs }: SourceInspectorProps)
               </h4>
               {selectedSource.source_metadata?.summary_text ? (
                 <div className="prose">
-                  {renderMarkdown(selectedSource.source_metadata.summary_text as string)}
+                  <MarkdownRenderer content={selectedSource.source_metadata.summary_text as string} variant="compact" />
                 </div>
               ) : selectedSource.fetch_status === "failed" ? (
                 <div className="rounded-lg bg-rose-500/5 border border-rose-500/10 p-4 text-center space-y-2">

@@ -104,6 +104,10 @@ class AppSettings(BaseSettings):
     openai_model: str = Field(default="gpt-4o")
     openai_max_tokens: int = Field(default=4096)
     openai_temperature: float = Field(default=0.7)
+    llm_max_concurrency: int = Field(
+        default=1,
+        description="Maximum concurrent LLM requests to process simultaneously",
+    )
 
     # ---------- Ollama / Local LLM ----------
     ollama_base_url: str = Field(default="http://localhost:11434/v1")

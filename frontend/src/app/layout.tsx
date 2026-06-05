@@ -33,7 +33,11 @@ export const metadata: Metadata = {
   description:
     "Enterprise AI Research Agent Platform — multi-agent research orchestration with real-time streaming.",
   robots: { index: false, follow: false }, // Private platform
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+    apple: "/favicon.ico?v=2",
+  },
 };
 
 export const viewport: Viewport = {

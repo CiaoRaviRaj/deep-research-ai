@@ -11,7 +11,7 @@ export function CreateSessionForm(): React.JSX.Element {
   const { addSession, setActiveSessionId } = useResearchStore();
   const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAdvanced] = useState(false);
   const [concurrency, setConcurrency] = useState(3);
   const [maxSources, setMaxSources] = useState(5);
   const [selectedModel, setSelectedModel] = useState("gemma-2-9b-it");
@@ -97,7 +97,7 @@ export function CreateSessionForm(): React.JSX.Element {
 
         {/* Advanced trigger panel */}
         <div>
-          <button
+          {/* <button
             type="button"
             onClick={() => setShowAdvanced(!showAdvanced)}
             className="flex items-center gap-1.5 text-xs font-bold text-violet-400 hover:text-violet-300 transition-colors focus:outline-none"
@@ -111,7 +111,7 @@ export function CreateSessionForm(): React.JSX.Element {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
             Advanced Execution Variables
-          </button>
+          </button> */}
 
           {showAdvanced && (
             <div className="mt-3 rounded-xl bg-[var(--color-surface-50)] p-4 border border-[var(--color-border)] grid gap-4 sm:grid-cols-2">

@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useResearchStore } from "@/store/research.store";
 import { useResearchStream } from "@/hooks/use-research-stream";
 import { SourceInspector } from "./SourceInspector";
+import { MarkdownRenderer } from "./MarkdownRenderer";
+import { useRouter } from "next/navigation";
 import { Source } from "@/types/research";
 import { appConfig } from "@/config/app.config";
 import { useFeatureFlags } from "@/providers/FeatureFlagProvider";
@@ -12,6 +14,7 @@ import { FeatureFlagValue } from "@/types/feature-flags";
 export function SessionDetails(): React.JSX.Element {
   const { activeSessionId, resetActiveSession } = useResearchStore();
   const { activeSession, logs, connectionStatus, reconnectAttempt } = useResearchStream(activeSessionId);
+  const router = useRouter();
   
   const [elapsedTime, setElapsedTime] = useState(0);
   const [activeTab, setActiveTab] = useState<"report" | "diagnostics">("report");
@@ -116,65 +119,7 @@ export function SessionDetails(): React.JSX.Element {
     setTimeout(() => setCopySuccess(false), 2000);
   }
 
-  // Robust inline markdown parsing helper
-  function parseInlineFormatting(text: string) {
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    const codeRegex = /`(.*?)`/g;
-    
-    const parts = text.split(boldRegex);
-    return parts.map((part, index) => {
-      const isBold = index % 2 === 1;
-      const subparts = part.split(codeRegex);
-      
-      const renderedSubparts = subparts.map((subpart, subindex) => {
-        const isCode = subindex % 2 === 1;
-        if (isCode) {
-          return (
-            <code key={subindex} className="bg-[var(--color-surface-200)] px-1.5 py-0.5 rounded text-xs font-mono text-violet-300 border border-[var(--color-border)]">
-              {subpart}
-            </code>
-          );
-        }
-        return subpart;
-      });
 
-      if (isBold) {
-        return <strong key={index} className="text-white font-extrabold">{renderedSubparts}</strong>;
-      }
-      return <span key={index}>{renderedSubparts}</span>;
-    });
-  }
-
-  // Premium full markdown block renderer
-  function renderMarkdown(text: string) {
-    if (!text) return null;
-    return text.split("\n").map((para, i) => {
-      const cleanPara = para.trim();
-      if (!cleanPara) return <div key={i} className="h-2" />;
-
-      if (cleanPara.startsWith("# ")) {
-        return <h1 key={i} className="text-xl font-bold font-outfit mt-5 mb-2 text-white border-b border-[var(--color-border)] pb-2">{cleanPara.substring(2)}</h1>;
-      }
-      if (cleanPara.startsWith("## ")) {
-        return <h2 key={i} className="text-lg font-bold font-outfit mt-4 mb-2 text-white">{cleanPara.substring(3)}</h2>;
-      }
-      if (cleanPara.startsWith("### ")) {
-        return <h3 key={i} className="text-sm font-bold font-outfit mt-3.5 mb-1.5 text-violet-200">{cleanPara.substring(4)}</h3>;
-      }
-      if (cleanPara.startsWith("- ") || cleanPara.startsWith("* ")) {
-        return (
-          <li key={i} className="ml-5 list-disc text-sm text-[var(--color-text-secondary)] mb-1 leading-relaxed">
-            {parseInlineFormatting(cleanPara.substring(2))}
-          </li>
-        );
-      }
-      return (
-        <p key={i} className="text-sm leading-relaxed text-[var(--color-text-secondary)] mb-2.5">
-          {parseInlineFormatting(cleanPara)}
-        </p>
-      );
-    });
-  }
 
   // SSE Signal Badge rendering
   function renderSignalBadge() {
@@ -216,7 +161,10 @@ export function SessionDetails(): React.JSX.Element {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--color-border)] pb-5">
         <div className="space-y-1.5 min-w-0">
           <button
-            onClick={resetActiveSession}
+            onClick={() => {
+              resetActiveSession();
+              router.push("/");
+            }}
             className="group flex items-center gap-1.5 text-xs font-bold text-violet-400/90 hover:text-violet-300 transition-all duration-200 focus:outline-none mb-2 border border-violet-500/20 bg-violet-500/5 hover:bg-violet-500/10 px-2.5 py-1 rounded-lg w-fit shadow-md shadow-violet-950/20"
           >
             <svg className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -236,7 +184,7 @@ export function SessionDetails(): React.JSX.Element {
         </div>
 
         {/* Diagnostic Panel Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 whitespace-nowrap">
           <button
             onClick={() => setActiveTab("report")}
             className={[
@@ -364,7 +312,7 @@ export function SessionDetails(): React.JSX.Element {
                   
                   {/* Clean rendered report brief */}
                   <div className="prose flex-1 overflow-y-auto pr-1">
-                    {renderMarkdown(activeSession.result_summary)}
+                    <MarkdownRenderer content={activeSession.result_summary} variant="normal" />
                   </div>
                 </>
               ) : activeSession.status === "failed" ? (

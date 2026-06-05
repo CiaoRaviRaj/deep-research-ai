@@ -71,6 +71,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # ---------- Shutdown ----------
     logger.info("Shutting down application...")
+    
+    # Close LLM Queue Workers
+    from app.services.llm import LLMService
+    await LLMService.shutdown_queue()
+    logger.info("LLM queue workers stopped")
+
     await close_redis()
     logger.info("Redis connections closed")
 

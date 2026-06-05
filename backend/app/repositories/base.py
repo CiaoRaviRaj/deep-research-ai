@@ -39,7 +39,9 @@ class AbstractRepository(ABC, Generic[ModelT]):
     async def get_by_id(self, entity_id: uuid.UUID) -> ModelT | None: ...
 
     @abstractmethod
-    async def get_all(self, limit: int = 100, offset: int = 0) -> list[ModelT]: ...
+    async def get_all(
+        self, limit: int = 100, offset: int = 0, order_by: Any = None
+    ) -> list[ModelT]: ...
 
     @abstractmethod
     async def create(self, **kwargs: Any) -> ModelT: ...
@@ -81,11 +83,15 @@ class SQLAlchemyRepository(AbstractRepository[ModelT], Generic[ModelT]):
         )
         return result.scalar_one_or_none()
 
-    async def get_all(self, limit: int = 100, offset: int = 0) -> list[ModelT]:
-        """Retrieve paginated list of all entities."""
-        result = await self._session.execute(
-            select(self.model).limit(limit).offset(offset)
-        )
+    async def get_all(
+        self, limit: int = 100, offset: int = 0, order_by: Any = None
+    ) -> list[ModelT]:
+        """Retrieve paginated list of all entities, optionally ordered."""
+        stmt = select(self.model)
+        if order_by is not None:
+            stmt = stmt.order_by(order_by)
+        stmt = stmt.limit(limit).offset(offset)
+        result = await self._session.execute(stmt)
         return list(result.scalars().all())
 
     async def create(self, **kwargs: Any) -> ModelT:

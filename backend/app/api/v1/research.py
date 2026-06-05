@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db_session, get_session_factory
 from app.core.settings import get_settings
 from app.core.enums import ResearchStatus
+from app.models.research_session import ResearchSession
 from app.schemas.research import ResearchSessionCreate, ResearchSessionResponse, ResearchSessionListResponse, SourceResponse
 from app.repositories import ResearchSessionRepository, ExecutionLogRepository, SourceRepository
 from app.graph.builder import build_research_graph
@@ -203,8 +204,9 @@ async def list_research_sessions(
     """Fetch paginated summary of all historical research sessions."""
     session_repo = ResearchSessionRepository(db)
     
+    
     # Fetch list
-    sessions = await session_repo.get_all(limit=limit, offset=offset)
+    sessions = await session_repo.get_all(limit=limit, offset=offset, order_by=ResearchSession.created_at.desc())
     
     # Fetch total count
     total = len(await session_repo.get_all(limit=100000))

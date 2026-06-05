@@ -150,10 +150,17 @@ class SummarizerAgent(BaseAgent):
 
     def _clean_html(self, html: str) -> str:
         """Strip HTML tags, scripts, and styles cleanly to extract plain text."""
-        # Remove script and style elements
-        html = re.sub(r'<(script|style)\b[^>]*>([\s\S]*?)<\/\1>', '', html, flags=re.IGNORECASE)
+        import html as html_parser
+        
+        # Remove script, style, iframe, and noscript elements
+        html = re.sub(r'<(script|style|iframe|noscript)\b[^>]*>([\s\S]*?)<\/\1>', '', html, flags=re.IGNORECASE)
         # Remove HTML tags
         text = re.sub(r'<[^>]+>', ' ', html)
+        # Decode HTML entities (e.g. &copy; -> ©, &#038; -> &)
+        text = html_parser.unescape(text)
+        # Remove regex pattern strings that leak from scripts or configurations (like (?<=...) or (?=...))
+        text = re.sub(r'\(\?<=.*?\)', '', text)
+        text = re.sub(r'\(\?=.*?\)', '', text)
         # Clean whitespace
         text = re.sub(r'\s+', ' ', text).strip()
         return text

@@ -60,7 +60,7 @@ class ResearchSessionRepository(SQLAlchemyRepository[ResearchSession]):
         )
         return list(result.scalars().all())
 
-    async def get_active_sessions(self, limit: int = 50) -> list[ResearchSession]:
+    async def get_active_sessions(self, limit: int = 50, offset: int = 0) -> list[ResearchSession]:
         """Return all non-terminal sessions (pending, planning, researching, etc.)."""
         terminal_states = [
             ResearchStatus.COMPLETED,
@@ -70,8 +70,9 @@ class ResearchSessionRepository(SQLAlchemyRepository[ResearchSession]):
         result = await self._session.execute(
             select(ResearchSession)
             .where(ResearchSession.status.notin_([str(s) for s in terminal_states]))
-            .order_by(ResearchSession.created_at.asc())
+            .order_by(ResearchSession.created_at.desc())
             .limit(limit)
+            .offset(offset)
         )
         return list(result.scalars().all())
 

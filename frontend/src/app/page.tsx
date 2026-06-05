@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { ResearchDashboard } from "@/components/research/ResearchDashboard";
 import { HealthStatus } from "@/components/health/HealthStatus";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "AI Deep Research Engine — Console Dashboard",
   description: "Enterprise multi-agent research orchestration console with real-time SSE streaming.",
+  icons: {
+    icon: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+    apple: "/favicon.ico?v=2",
+  },
 };
 
 export default function HomePage(): React.JSX.Element {
@@ -14,9 +20,7 @@ export default function HomePage(): React.JSX.Element {
         {/* ---------- Top Telemetry Console Bar ---------- */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-[var(--color-surface-50)] border border-[var(--color-border)] rounded-2xl p-4">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 shadow-md shadow-violet-950/20 text-white font-extrabold text-lg">
-              Ω
-            </span>
+            <Image src="/logo.png" alt="Logo" width={36} height={36} className="rounded-xl" />
             <div>
               <h2 className="font-outfit text-sm font-extrabold text-white tracking-tight leading-none">
                 Deep Research Console
