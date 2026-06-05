@@ -7,7 +7,7 @@ export function Footer(): React.JSX.Element {
   return (
     <footer className="pt-8 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--color-text-muted)] w-full">
       <div>
-        Built by <span className="font-semibold text-white">CIaoRaviRaj</span> — © 2026 All rights reserved.
+        Built by <span className="font-semibold text-white">CiaoRaviRaj</span> — © 2026 All rights reserved.
       </div>
       <div className="flex gap-4">
         <Link href={"/privacy" as LinkHref} className="hover:text-white transition-colors duration-200">

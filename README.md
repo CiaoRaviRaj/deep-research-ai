@@ -28,17 +28,17 @@ graph TD
         RD[(Redis Cache & Pub/Sub)]
     end
 
-    UI -->|1. Create Session / POST| RTR
-    RTR -->|2. Initialize Session| PG
-    UI -->|3. Establish SSE Connection| SSE_C
-    SSE_C -->|SSE Handshake / GET| SSE_S
-    SSE_S -->|4. Listen for Events| RD
-    RTR -->|5. Trigger Agent Run| LGE
-    LGE -->|6. Write Status/Telemetry/Report| PG
-    LGE -->|7. Publish Live Step Updates| RD
-    RD -->|8. Stream Updates| SSE_C
-    SSE_C -->|9. Dispatch State Updates| ZS
-    ZS -->|10. Reactive UI Render| UI
+    UI -->|"1. Create Session / POST"| RTR
+    RTR -->|"2. Initialize Session"| PG
+    UI -->|"3. Establish SSE Connection"| SSE_C
+    SSE_C -->|"SSE Handshake / GET"| SSE_S
+    SSE_S -->|"4. Listen for Events"| RD
+    RTR -->|"5. Trigger Agent Run"| LGE
+    LGE -->|"6. Write Status/Telemetry/Report"| PG
+    LGE -->|"7. Publish Live Step Updates"| RD
+    RD -->|"8. Stream Updates"| SSE_C
+    SSE_C -->|"9. Dispatch State Updates"| ZS
+    ZS -->|"10. Reactive UI Render"| UI
 ```
 
 ---
@@ -50,18 +50,18 @@ The backend leverages a LangGraph state machine directed by a **Supervisor Agent
 ```mermaid
 flowchart TD
     START([Start Agent Workflow]) --> SUP[Supervisor Agent]
-    
-    SUP -->|State: No source_ids| SRCH[Search & Scraper Agent]
-    SRCH -->|1. Search Queries<br/>2. Scrape Webs<br/>3. Save Sources| SUP
-    
-    SUP -->|State: Unsummarized Sources| SUM[Summarizer Agent]
-    SUM -->|1. Extract Semantic Chunks<br/>2. Summarize Content| SUP
-    
-    SUP -->|State: Summaries Done, No Report| SYN[Synthesizer Agent]
-    SYN -->|1. Compile Summaries<br/>2. Format Report (Markdown)<br/>3. Save to DB| SUP
-    
-    SUP -->|State: Report Generated| END([End Workflow])
-    
+
+    SUP -->|"State: No source_ids"| SRCH[Search & Scraper Agent]
+    SRCH -->|"1. Search Queries<br/>2. Scrape Webs<br/>3. Save Sources"| SUP
+
+    SUP -->|"State: Unsummarized Sources"| SUM[Summarizer Agent]
+    SUM -->|"1. Extract Semantic Chunks<br/>2. Summarize Content"| SUP
+
+    SUP -->|"State: Summaries Done, No Report"| SYN[Synthesizer Agent]
+    SYN -->|"1. Compile Summaries<br/>2. Format Report (Markdown)<br/>3. Save to DB"| SUP
+
+    SUP -->|"State: Report Generated"| END([End Workflow])
+
     style START fill:#4c1d95,stroke:#7c3aed,stroke-width:2px,color:#fff
     style END fill:#064e3b,stroke:#059669,stroke-width:2px,color:#fff
     style SUP fill:#1e1b4b,stroke:#4f46e5,stroke-width:2px,color:#fff
@@ -119,12 +119,12 @@ docker compose up --build
 
 ### Access Points
 
-| Service    | URL                    |
-|-----------|------------------------|
-| Frontend  | http://localhost:4000   |
-| Backend   | http://localhost:8000   |
-| API Docs  | http://localhost:8000/docs |
-| Health    | http://localhost:8000/api/v1/health |
+| Service  | URL                                 |
+| -------- | ----------------------------------- |
+| Frontend | http://localhost:4000               |
+| Backend  | http://localhost:8000               |
+| API Docs | http://localhost:8000/docs          |
+| Health   | http://localhost:8000/api/v1/health |
 
 ---
 
@@ -167,17 +167,17 @@ Supports three environments: `development`, `staging`, `production`
 
 ## 📊 Technical Stack
 
-| Layer       | Technology                          |
-|------------|-------------------------------------|
-| Backend    | FastAPI, SQLAlchemy 2.x, Pydantic v2 |
-| Frontend   | Next.js 15, TypeScript, TailwindCSS  |
-| Database   | PostgreSQL 16+                      |
-| Cache      | Redis 7+                            |
-| Infra      | Docker, Docker Compose, Nginx       |
-| Agents     | LangGraph Orchestrator              |
+| Layer    | Technology                           |
+| -------- | ------------------------------------ |
+| Backend  | FastAPI, SQLAlchemy 2.x, Pydantic v2 |
+| Frontend | Next.js 15, TypeScript, TailwindCSS  |
+| Database | PostgreSQL 16+                       |
+| Cache    | Redis 7+                             |
+| Infra    | Docker, Docker Compose, Nginx        |
+| Agents   | LangGraph Orchestrator               |
 
 ---
 
 ## 📄 License
 
-Built by CIaoRaviRaj — © 2026 All rights reserved.
+Built by CiaoRaviRaj — © 2026 All rights reserved.
