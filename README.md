@@ -3,6 +3,8 @@
 > **Enterprise AI Research Agent Platform**
 > LangGraph + FastAPI + Next.js + Redis + PostgreSQL + SSE
 
+🎥 **[Watch the Loom Video Demo](https://www.loom.com/share/e177558404c14799a33baf274503c9ef)**
+
 ---
 
 ## 🏗️ System Architecture
