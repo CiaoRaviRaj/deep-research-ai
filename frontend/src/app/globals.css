@@ -51,6 +51,38 @@
   --font-outfit: "Outfit", sans-serif;
 }
 
+/* ---------- Light Mode Variables ---------- */
+[data-theme='light'] {
+  /* Brand */
+  --color-brand-400: #7c3aed;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #a78bfa;
+
+  /* Surfaces */
+  --color-surface: #f8fafc;
+  --color-surface-50: #ffffff;
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+
+  /* Text */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+
+  /* Borders */
+  --color-border: rgba(139, 92, 246, 0.08);
+  --color-border-hover: rgba(139, 92, 246, 0.2);
+}
+
+/* Premium UI Overrides for Light Mode */
+[data-theme='light'] .glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+}
+[data-theme='light'] .glass-panel:hover {
+  box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.06);
+}
+
+
 /* ---------- Base Reset ---------- */
 *, *::before, *::after {
   box-sizing: border-box;

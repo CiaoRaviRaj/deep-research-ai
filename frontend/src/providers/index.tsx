@@ -16,9 +16,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-
 import { FeatureFlagProvider } from "./FeatureFlagProvider";
 import { QueryProvider } from "./QueryProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -27,7 +27,9 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps): React.JSX.Element {
   return (
     <QueryProvider>
-      <FeatureFlagProvider>{children}</FeatureFlagProvider>
+      <ThemeProvider>
+        <FeatureFlagProvider>{children}</FeatureFlagProvider>
+      </ThemeProvider>
     </QueryProvider>
   );
 }

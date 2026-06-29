@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ResearchDashboard } from "@/components/research/ResearchDashboard";
 import { HealthStatus } from "@/components/health/HealthStatus";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
 
@@ -23,7 +24,7 @@ export default function HomePage(): React.JSX.Element {
           <div className="flex items-center gap-3">
             <Image src="/logo.png" alt="Logo" width={36} height={36} className="rounded-xl" />
             <div>
-              <h2 className="font-outfit text-sm font-extrabold text-white tracking-tight leading-none">
+              <h2 className="font-outfit text-sm font-extrabold text-[var(--color-text-primary)] tracking-tight leading-none">
                 Deep Research Console
               </h2>
               <span className="text-[10px] text-[var(--color-text-muted)] font-medium">
@@ -33,7 +34,8 @@ export default function HomePage(): React.JSX.Element {
           </div>
 
           {/* Micro health indicator tag */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
+            <ThemeToggle />
             <HealthStatus />
           </div>
         </div>

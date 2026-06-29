@@ -50,7 +50,14 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-deep_research_dev}", "ping"]
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "-a",
+          "${REDIS_PASSWORD:-deep_research_dev}",
+          "ping",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -118,6 +125,7 @@ services:
       # Mount source code for hot-reload; exclude node_modules
       - ./frontend/src:/app/src:ro
       - ./frontend/public:/app/public:ro
+      # - ./docs:/app/docs:ro
     depends_on:
       - backend
     networks:

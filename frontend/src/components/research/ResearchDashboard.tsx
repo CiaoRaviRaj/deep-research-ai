@@ -21,7 +21,7 @@ export function ResearchDashboard(): React.JSX.Element {
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-400 pulse-dot" />
                 Phase 6 Production Streaming Ready
               </div>
-              <h1 className="font-outfit text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+              <h1 className="font-outfit text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)] sm:text-5xl">
                 Deep Research{" "}
                 <span className="bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
                   Dashboard
